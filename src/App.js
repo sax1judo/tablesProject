@@ -74,7 +74,7 @@ const App = () => {
 	return tableData.properties !== null ? (
 		<div>
 			<Logo />
-			{/* <UploadFile importExcelFile={importExcelFile} /> */}
+			<UploadFile importExcelFile={importExcelFile} />
 			<Table tableData={tableData} inputField={inputField} setSort={setSort} />
 			<Pagination
 				postsPerPage={searchData.pageSize}

@@ -18,7 +18,7 @@ const Table = props => {
 					{/* table columns  */}
 					<tr>
 						{props.tableData.properties.map((columnTitle, index) => {
-							let Title = columnTitle === 'id' ? '' : columnTitle.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+/g).join(' ');
+							let Title = columnTitle.match(/[A-Z]+(?![a-z])|[A-Z]?[a-z]+|\d+/g).join(' ');
 							return (
 								<th
 									key={index}
@@ -39,19 +39,14 @@ const Table = props => {
 					{/* search fields */}
 					<tr>
 						{props.tableData.properties.map((record, index) => {
-							let flag;
-							if (record === 'id') flag = true;
-							else flag = false;
 							return (
 								<th key={index} style={{ textAlign: 'center' }}>
-									{flag ? null : (
-										<input
-											title={record}
-											type="text"
-											id={record}
-											onChange={e => props.inputField(e.target.title, e.target.value)}
-										></input>
-									)}
+									<input
+										title={record}
+										type="text"
+										id={record}
+										onChange={e => props.inputField(e.target.title, e.target.value)}
+									></input>
 								</th>
 							);
 						})}
@@ -65,22 +60,11 @@ const Table = props => {
 						? null
 						: props.tableData.records.map((record, index) => (
 								<tr key={index}>
-									{Object.keys(record).map(key =>
-										key === 'id' ? (
-											<td style={{ display: 'flex', justifyContent: 'center' }}>
-												<div
-													className="userImage"
-													style={{
-														backgroundImage: `url(../assets/workers/${record[key]}.jpg)`,
-													}}
-												></div>
-											</td>
-										) : (
-											<td style={{ alignItems: 'center', textAlign: 'center', verticalAlign: 'middle' }} key={key}>
-												{record[key] === null ? '-' : record[key]}
-											</td>
-										),
-									)}
+									{Object.keys(record).map(key => (
+										<td style={{ alignItems: 'center', textAlign: 'center', verticalAlign: 'middle' }} key={key}>
+											{record[key] === null ? '-' : record[key]}
+										</td>
+									))}
 									{/* <td style={{ display: 'flex', justifyContent: 'space-evenly' }}>
 								<button className="btn btn-primary" onClick={() => openPopUp(record)}>
 									EDIT
