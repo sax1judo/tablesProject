@@ -2,6 +2,6 @@ import React from 'react';
 import '../style/Logo.scss';
 
 const Logo = () => {
-	return <div className="logoWrapper"></div>;
+	return <div style={{ marginBottom: '2%' }} className="logoWrapper"></div>;
 };
 export default Logo;
