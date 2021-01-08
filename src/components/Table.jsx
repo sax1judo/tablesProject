@@ -56,9 +56,9 @@ const Table = props => {
 
 					{/* table data */}
 
-					{props.tableData.records.length === 0
+					{props.tableData.items.length === 0
 						? null
-						: props.tableData.records.map((record, index) => (
+						: props.tableData.items.map((record, index) => (
 								<tr key={index}>
 									{Object.keys(record).map(key => (
 										<td style={{ alignItems: 'center', textAlign: 'center', verticalAlign: 'middle' }} key={key}>
