@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-export const httpRequest = async (url, method, data, responseType) => {
+export const httpRequest = async (url, method, data) => {
 	return axios({
 		url: url,
 		method: method,
 		data: data,
-		responseType: responseType === undefined ? null : responseType,
 	})
 		.then(res => res.data)
 		.catch(err => console.error(err));
