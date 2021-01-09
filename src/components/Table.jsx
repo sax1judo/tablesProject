@@ -61,17 +61,18 @@ const Table = props => {
 
 					{/* table data */}
 
-					{props.tableData.records.length === 0
+					{props.tableData.items.length === 0
 						? null
-						: props.tableData.records.map((record, index) => (
+						: props.tableData.items.map((record, index) => (
 								<tr key={index}>
 									{Object.keys(record).map(key =>
 										key === 'id' ? (
-											<td style={{ display: 'flex', justifyContent: 'center' }}>
+											<td>
 												<div
 													className="userImage"
 													style={{
 														backgroundImage: `url(../assets/workers/${record[key]}.jpg)`,
+														margin: 'auto',
 													}}
 												></div>
 											</td>

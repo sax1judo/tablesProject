@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
+import ExcelTabs from './components/ExcelTabs';
+import ExportExcel from './components/ExportExcel';
 import Logo from './components/Logo';
 import Pagination from './components/Pagination';
 import Table from './components/Table';
 import UploadFile from './components/UploadFile';
-import { httpRequest } from './scripts/http';
+import { httpRequest, exportExcelHttp } from './scripts/http';
+import { API } from './config';
 
 const App = () => {
+	const [baseAPIAdress, setBaseAPIAdress] = useState(API.baseAPIUrl);
 	const [tableData, setTableData] = useState({
 		totalRecordsNumber: null,
 		properties: null,
+		tableName: null,
+		worksheets: null,
+		activeWorksheet: null,
 		records: [],
 	});
 	const [searchData, setSearchData] = useState({
@@ -62,12 +69,31 @@ const App = () => {
 		setSearchData({ ...searchData, items: itemsArray });
 	};
 	const importExcelFile = data => {
-		httpRequest('http://localhost:5000/tests/excel', 'post', data).then(res => {});
+		httpRequest(API.excel, 'post', data).then(res => {
+			setBaseAPIAdress(API.searchExcel);
+			let excelData = { ...searchData, filePath: res };
+			httpRequest(API.searchExcel, 'post', excelData).then(res => {
+				setTableData(res);
+				setSearchData(excelData);
+			});
+		});
 	};
-
+	const exportExcelFile = () => {
+		exportExcelHttp(API.exportExcelWorkers, searchData).then(response => {
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', searchData.filePath); //or any other extension
+			document.body.appendChild(link);
+			link.click();
+		});
+	};
+	const changeExcelTab = tab => {
+		setSearchData({ ...searchData, activeWorksheet: tab, page: 1 });
+	};git 
 	useEffect(() => {
-		httpRequest('http://localhost:5000/tests/workers', 'post', searchData).then(res => {
-			setTableData({ totalRecordsNumber: res.count, properties: res.properties, records: res.items });
+		httpRequest(baseAPIAdress, 'post', searchData).then(res => {
+			setTableData(res);
 		});
 	}, [searchData]);
 
@@ -75,10 +101,16 @@ const App = () => {
 		<div>
 			<Logo />
 			{/* <UploadFile importExcelFile={importExcelFile} /> */}
+			<ExcelTabs
+				worksheets={tableData.worksheets}
+				activeWorksheet={tableData.activeWorksheet}
+				changeExcelTab={changeExcelTab}
+			/>
 			<Table tableData={tableData} inputField={inputField} setSort={setSort} />
+			<ExportExcel exportExcelFile={exportExcelFile} />
 			<Pagination
 				postsPerPage={searchData.pageSize}
-				totalPosts={tableData.totalRecordsNumber}
+				totalPosts={tableData.count}
 				paginate={paginate}
 				activePage={searchData.page}
 				setPostsPerPage={setPostPerPage}

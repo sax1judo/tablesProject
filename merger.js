@@ -3,7 +3,6 @@ process.stdout.write('\u001B[2J\u001B[0;0f');
 const fs = require('fs');
 const path = require('path');
 const ignored = [];
-const version = require('./package.json');
 
 if (!fs.existsSync('public')) {
 	console.log(`Folder "public" not found!`);
@@ -11,8 +10,8 @@ if (!fs.existsSync('public')) {
 }
 try {
 	copyDir('./src/assets', `./public/assets`);
-	copyDir('./src/fonts', `./public/fonts`);
 	copy('./src/index.html', `./public/index.html`);
+	copy('./src/config.js', `./public/config.js`);
 	console.log(`✔ MERGER DONE`);
 } catch (error) {
 	console.log(`❌ ${error}`);
