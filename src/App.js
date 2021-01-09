@@ -90,7 +90,7 @@ const App = () => {
 	};
 	const changeExcelTab = tab => {
 		setSearchData({ ...searchData, activeWorksheet: tab, page: 1 });
-	};git 
+	}; 
 	useEffect(() => {
 		httpRequest(baseAPIAdress, 'post', searchData).then(res => {
 			setTableData(res);
