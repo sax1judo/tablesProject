@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Loader from 'react-loader-spinner';
 import ExcelTabs from './components/ExcelTabs';
+import ExportExcel from './components/ExportExcel';
 import Logo from './components/Logo';
 import Pagination from './components/Pagination';
 import Table from './components/Table';
 import UploadFile from './components/UploadFile';
-import { httpRequest } from './scripts/http';
+import { httpRequest, exportExcelHttp } from './scripts/http';
 
 const App = () => {
 	const [baseAPIAdress, setBaseAPIAdress] = useState('http://localhost:5000/tests/workers');
@@ -76,6 +77,16 @@ const App = () => {
 			});
 		});
 	};
+	const exportExcelFile = () => {
+		exportExcelHttp(`http://localhost:5000/tests/excel-export/${searchData.filePath}`).then(response => {
+			const url = window.URL.createObjectURL(new Blob([response.data]));
+			const link = document.createElement('a');
+			link.href = url;
+			link.setAttribute('download', searchData.filePath); //or any other extension
+			document.body.appendChild(link);
+			link.click();
+		});
+	};
 	const changeExcelTab = tab => {
 		setSearchData({ ...searchData, activeWorksheet: tab, page: 1 });
 	};
@@ -95,6 +106,7 @@ const App = () => {
 				changeExcelTab={changeExcelTab}
 			/>
 			<Table tableData={tableData} inputField={inputField} setSort={setSort} />
+			<ExportExcel exportExcelFile={exportExcelFile} />
 			<Pagination
 				postsPerPage={searchData.pageSize}
 				totalPosts={tableData.count}
