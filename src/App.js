@@ -7,9 +7,10 @@ import Pagination from './components/Pagination';
 import Table from './components/Table';
 import UploadFile from './components/UploadFile';
 import { httpRequest, exportExcelHttp } from './scripts/http';
+import { API } from './config';
 
 const App = () => {
-	const [baseAPIAdress, setBaseAPIAdress] = useState('http://localhost:5000/tests/workers');
+	const [baseAPIAdress, setBaseAPIAdress] = useState(API.baseAPIUrl);
 	const [tableData, setTableData] = useState({
 		totalRecordsNumber: null,
 		properties: null,
@@ -68,17 +69,18 @@ const App = () => {
 		setSearchData({ ...searchData, items: itemsArray });
 	};
 	const importExcelFile = data => {
-		httpRequest('http://localhost:5000/tests/excel', 'post', data).then(res => {
-			setBaseAPIAdress('http://localhost:5000/tests/search-excel-data');
+		httpRequest(API.excel, 'post', data).then(res => {
+			setBaseAPIAdress(API.searchExcel);
 			let excelData = { ...searchData, filePath: res };
-			httpRequest('http://localhost:5000/tests/search-excel-data', 'post', excelData).then(res => {
+			httpRequest(API.searchExcel, 'post', excelData).then(res => {
 				setTableData(res);
 				setSearchData(excelData);
+				document.getElementById('exportExcelBtton').style.display = 'block';
 			});
 		});
 	};
 	const exportExcelFile = () => {
-		exportExcelHttp(`http://localhost:5000/tests/excel-export/${searchData.filePath}`).then(response => {
+		exportExcelHttp(API.exportExcel + `${searchData.filePath}`).then(response => {
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
