@@ -83,14 +83,14 @@ const App = () => {
 			const url = window.URL.createObjectURL(new Blob([response.data]));
 			const link = document.createElement('a');
 			link.href = url;
-			link.setAttribute('download', searchData.filePath); //or any other extension
+			link.setAttribute('download', 'workers.xlsx');
 			document.body.appendChild(link);
 			link.click();
 		});
 	};
 	const changeExcelTab = tab => {
 		setSearchData({ ...searchData, activeWorksheet: tab, page: 1 });
-	}; 
+	};
 	useEffect(() => {
 		httpRequest(baseAPIAdress, 'post', searchData).then(res => {
 			setTableData(res);

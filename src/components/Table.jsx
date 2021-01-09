@@ -67,7 +67,7 @@ const Table = props => {
 								<tr key={index}>
 									{Object.keys(record).map(key =>
 										key === 'id' ? (
-											<td>
+											<td >
 												<div
 													className="userImage"
 													style={{
