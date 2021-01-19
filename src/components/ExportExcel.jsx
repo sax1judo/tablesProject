@@ -5,7 +5,7 @@ const ExportExcel = ({ exportExcelFile }) => {
 		<button
 			className="btn btn-outline-secondary"
 			type="button"
-			style={{ float: 'right' }}
+			style={{ float: 'left' }}
 			id="exportExcelBtton"
 			onClick={() => exportExcelFile()}
 		>

@@ -7,3 +7,25 @@
 	border: 1px solid #6c6b6a;
 	border-radius: 10px;
 }
+input {
+	font-size: 13px;
+}
+::-webkit-input-placeholder {
+	text-transform: uppercase;
+	text-align: center;
+}
+
+:-moz-placeholder {
+	text-transform: uppercase;
+	text-align: center;
+}
+
+::-moz-placeholder {
+	text-transform: uppercase;
+	text-align: center;
+}
+
+:-ms-input-placeholder {
+	text-transform: uppercase;
+	text-align: center;
+}

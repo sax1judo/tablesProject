@@ -5,9 +5,10 @@ import ExportExcel from './components/ExportExcel';
 import Logo from './components/Logo';
 import Pagination from './components/Pagination';
 import Table from './components/Table';
-import UploadFile from './components/UploadFile';
+import DropDown from './components/DropDown';
 import { httpRequest, exportExcelHttp } from './scripts/http';
 import { API } from './config';
+import PageNumberInfoWrapper from './components/PageNumberInfoWrapper';
 
 const App = () => {
 	const [baseAPIAdress, setBaseAPIAdress] = useState(API.baseAPIUrl);
@@ -39,7 +40,7 @@ const App = () => {
 		setSearchData({ ...searchData, pageSize: parseFloat(pageSize), page: 1 });
 	};
 	const setSort = data => {
-		setSearchData({ ...searchData, sortField: data, sortOrder: !searchData.sortOrder });
+		setSearchData({ ...searchData, sortField: data, sortOrder: !searchData.sortOrder, page: 1 });
 	};
 	const inputField = (id, inputValue) => {
 		let item = { property: id, searchPart: inputValue, sortOrder: true };
@@ -101,20 +102,34 @@ const App = () => {
 		<div>
 			<Logo />
 			{/* <UploadFile importExcelFile={importExcelFile} /> */}
+			<DropDown postsPerPage={searchData.pageSize} setPostsPerPage={setPostPerPage} />
+			<ExportExcel exportExcelFile={exportExcelFile} />
 			<ExcelTabs
 				worksheets={tableData.worksheets}
 				activeWorksheet={tableData.activeWorksheet}
 				changeExcelTab={changeExcelTab}
 			/>
-			<Table tableData={tableData} inputField={inputField} setSort={setSort} />
-			<ExportExcel exportExcelFile={exportExcelFile} />
-			<Pagination
-				postsPerPage={searchData.pageSize}
-				totalPosts={tableData.count}
-				paginate={paginate}
-				activePage={searchData.page}
-				setPostsPerPage={setPostPerPage}
+			<Table
+				tableData={tableData}
+				inputField={inputField}
+				setSort={setSort}
+				sortField={searchData.sortField}
+				sortOrder={searchData.sortOrder}
 			/>
+			<div className="footer">
+				<PageNumberInfoWrapper
+					activePage={searchData.page}
+					postsPerPage={searchData.pageSize}
+					totalPosts={tableData.count}
+				/>
+				<Pagination
+					postsPerPage={searchData.pageSize}
+					totalPosts={tableData.count}
+					paginate={paginate}
+					activePage={searchData.page}
+					setPostsPerPage={setPostPerPage}
+				/>
+			</div>
 		</div>
 	) : (
 		<Loader type="TailSpin" color="#00BFFF" height={80} width={80} />

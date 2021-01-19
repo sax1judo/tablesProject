@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PopUpForm from './PopUpForm';
 import '../style/Table.scss';
+import sortIcon from '../assets/sortIcon.png';
+import sortAscIcon from '../assets/sortIconAsc.png';
 
 const Table = props => {
 	const [popUpData, setPopUpData] = useState([]);
@@ -13,7 +15,7 @@ const Table = props => {
 	};
 	return (
 		<>
-			<table className="table table-dark table-bordered">
+			<table className="table table-dark table-bordered" style={{ marginTop: '6%' }}>
 				<tbody>
 					{/* table columns  */}
 					<tr>
@@ -22,11 +24,34 @@ const Table = props => {
 							return (
 								<th
 									key={index}
-									style={{ textTransform: 'uppercase', cursor: 'pointer', textAlign: 'center' }}
+									style={
+										columnTitle !== 'id'
+											? { textTransform: 'uppercase', cursor: 'pointer', textAlign: 'center' }
+											: { textTransform: 'uppercase', cursor: 'pointer', textAlign: 'center', pointerEvents: 'none' }
+									}
 									title={columnTitle}
 									onClick={e => props.setSort(e.target.title)}
 								>
 									{Title}
+									{props.sortField === columnTitle && columnTitle !== 'id' ? (
+										<img
+											title={columnTitle}
+											onClick={e => props.setSort(e.target.title)}
+											style={
+												props.sortOrder
+													? { width: '25px', height: '25px', float: 'right' }
+													: { width: '25px', height: '25px', float: 'right', transform: 'rotate(180deg)' }
+											}
+											src={sortAscIcon}
+										></img>
+									) : columnTitle !== 'id' ? (
+										<img
+											title={columnTitle}
+											onClick={e => props.setSort(e.target.title)}
+											style={{ width: '25px', height: '25px', float: 'right' }}
+											src={sortIcon}
+										></img>
+									) : null}
 								</th>
 							);
 						})}
@@ -50,6 +75,7 @@ const Table = props => {
 											type="text"
 											id={record}
 											onChange={e => props.inputField(e.target.title, e.target.value)}
+											placeholder={'Search' + ' ' + record}
 										></input>
 									)}
 								</th>
@@ -67,7 +93,7 @@ const Table = props => {
 								<tr key={index}>
 									{Object.keys(record).map(key =>
 										key === 'id' ? (
-											<td >
+											<td>
 												<div
 													className="userImage"
 													style={{
