@@ -22,7 +22,7 @@ const App = () => {
 	});
 	const [searchData, setSearchData] = useState({
 		items: [],
-		pageSize: 5,
+		pageSize: 25,
 		page: 1,
 		sortField: '',
 		sortOrder: null,

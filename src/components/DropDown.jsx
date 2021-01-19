@@ -1,7 +1,7 @@
 import React from 'react';
 
 const DropDown = props => {
-	const recordsPerPage = [5, 10, 15, 20, 25];
+	const recordsPerPage = [25, 50, 100, 200, 500];
 	return (
 		<div style={{ float: 'right' }}>
 			Show
