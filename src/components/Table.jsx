@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import PopUpForm from './PopUpForm';
 import '../style/Table.scss';
+import sortIcon from '../assets/sortIcon.png';
+import sortAscIcon from '../assets/sortIconAsc.png';
 
 const Table = props => {
 	const [popUpData, setPopUpData] = useState([]);
@@ -12,8 +14,8 @@ const Table = props => {
 		setPopUpData([]);
 	};
 	return (
-		<>
-			<table className="table table-dark table-bordered">
+		<div className="tableWrapper">
+			<table className="table table-dark table-bordered" style={{ fontSize: '14px' }}>
 				<tbody>
 					{/* table columns  */}
 					<tr>
@@ -22,11 +24,36 @@ const Table = props => {
 							return (
 								<th
 									key={index}
-									style={{ textTransform: 'uppercase', cursor: 'pointer', textAlign: 'center' }}
+									style={{ textTransform: 'uppercase', cursor: 'pointer', textAlign: 'center', position: 'relative' }}
 									title={columnTitle}
 									onClick={e => props.setSort(e.target.title)}
 								>
 									{Title}
+									{props.sortField === columnTitle ? (
+										<img
+											title={columnTitle}
+											onClick={e => props.setSort(e.target.title)}
+											style={
+												props.sortOrder
+													? { width: '15px', height: '15px', position: 'absolute', right: '2%' }
+													: {
+															width: '15px',
+															height: '15px',
+															position: 'absolute',
+															right: '2%',
+															transform: 'rotate(180deg)',
+													  }
+											}
+											src={sortAscIcon}
+										></img>
+									) : (
+										<img
+											title={columnTitle}
+											onClick={e => props.setSort(e.target.title)}
+											style={{ width: '15px', height: '15px', position: 'absolute', right: '2%' }}
+											src={sortIcon}
+										></img>
+									)}
 								</th>
 							);
 						})}
@@ -46,6 +73,7 @@ const Table = props => {
 										type="text"
 										id={record}
 										onChange={e => props.inputField(e.target.title, e.target.value)}
+										placeholder={'search' + ' ' + record}
 									></input>
 								</th>
 							);
@@ -77,7 +105,7 @@ const Table = props => {
 				</tbody>
 			</table>
 			{popUpData.length === 0 ? null : <PopUpForm data={popUpData} closePopUpData={closePopUpData} />}
-		</>
+		</div>
 	);
 };
 export default Table;
